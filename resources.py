@@ -1,19 +1,18 @@
-#import constants as constants
 from flask_restful import Resource
 from flask import render_template
 from flask import make_response
-#from utils import restful_parser, format_client_name
-#from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
+from utils import constants as constants
+from utils.data import get_spreadsheet, process_dataframe 
 
-#from analysis import call_analysis
 
-#auth = HTTPBasicAuth()
+auth = HTTPBasicAuth()
 
-#@auth.verify_password
-#def verify(username, password):
-#    if not (username and password):
-#        return False
-#    return constants.USER_DATA.get(username) == password
+@auth.verify_password
+def verify(username, password):
+    if not (username and password):
+        return False
+    return constants.USER_DATA.get(username) == password
 
 
 class Home(Resource):
@@ -21,10 +20,16 @@ class Home(Resource):
         self._variables = {'relpath': '/static/'}
         self._variables.update(kwargs)
 
-    #@auth.login_required
+    @auth.login_required
     def get(self):
         headers = {'Content-Type': 'text/html'}
+        
+        # Get spreadsheet from Google Drive
+        df = get_spreadsheet(constants.SPREADSHEETNAME)
+        # Generate payload
+        payload = process_dataframe(df)
+
+        self._variables.update({'data': payload})
+
         return make_response(render_template('index.html', **self._variables), 200, headers)
-
-
 

@@ -29,8 +29,8 @@
         dataTable.addRows([
         {% for entry in data %}
 	  [ '{{ entry["section"] }}', '{{ entry["task"] }}', 
-            new Date({{ entry['year_start']}}, {{ entry['month_start']}}, {{ entry['day_start']}}), 
-            new Date({{ entry['year_end']}}, {{ entry['month_end']}}, {{ entry['day_end']}}) ],
+            new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
+            new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
 	]);
 
@@ -49,6 +49,10 @@
       <div class='row'>
         <div class="col-lg-12 col-sm-12 col-md-12">
           <h1>Roadmap</h1>
+	  <br>
+	  <a class="btn btn-warning" role="button" onClick="history.go(0)">Update</a>
+	  <br>
+	  <br>
           <div id="timeline" style="height: 720px;"></div>
 	</div>
       </div>
