@@ -24,11 +24,13 @@
 
         dataTable.addColumn({ type: 'string', id: 'section' });
         dataTable.addColumn({ type: 'string', id: 'task' });
+	// Tooltip has to be the third column, otherwise it doesn't work.      
+	dataTable.addColumn({ type: 'string', role: 'tooltip' });
         dataTable.addColumn({ type: 'date', id: 'start' });
         dataTable.addColumn({ type: 'date', id: 'end' });
         dataTable.addRows([
         {% for entry in data %}
-	  [ '{{ entry["section"] }}', '{{ entry["task"] }}', 
+		[ '{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["task"] }}' + ': ' + '{{ entry["description"] }}', 
             new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
             new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
