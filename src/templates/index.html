@@ -7,6 +7,8 @@
    <link href="{{ relpath }}css/font-awesome.min.css" rel="stylesheet">
    <link href="{{ relpath }}css/custom.css" rel="stylesheet">
 
+   <!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <!-- Bootstrap tooltips -->
    <script type="text/javascript" src="{{ relpath }}js/popper.js"></script>
    <!-- Bootstrap core JavaScript -->
@@ -19,27 +21,87 @@
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var container = document.getElementById('timeline');
-        var chart = new google.visualization.Timeline(container);
+        // var chart = new google.visualization.Timeline(container);
         var dataTable = new google.visualization.DataTable();
 
         dataTable.addColumn({ type: 'string', id: 'section' });
         dataTable.addColumn({ type: 'string', id: 'task' });
+	// Tooltip has to be the third column, otherwise it doesn't work.      
+	dataTable.addColumn({ type: 'string', role: 'tooltip', 'p': {'html': true}});
         dataTable.addColumn({ type: 'date', id: 'start' });
         dataTable.addColumn({ type: 'date', id: 'end' });
         dataTable.addRows([
+	[ '\0', 'Today', '', new Date(), new Date()],
         {% for entry in data %}
-	  [ '{{ entry["section"] }}', '{{ entry["task"] }}', 
+		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["fte"] }}' ),
             new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
             new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
 	]);
 
 	var options = {
-          timeline: { colorByRowLabel: true }
+          // This line makes the entire category's tooltip active.
+          focusTarget: 'category',
+	  tooltip: {isHtml: true},
+          timeline: { colorByRowLabel: true,
+	              rowLabelStyle: {color: 'black', fontName: 'Arial', fontSize: 14}}
         };
 
+	// Create and draw the visualization.
+        var chart = new google.visualization.Timeline(document.getElementById('timeline'));
+	
+	// Enable tooltip on selection ==============================================
+	// From https://stackoverflow.com/questions/32247941/trigger-google-timeline-tooltip-with-selection      
+	//      
+        //select-handler
+//        google.visualization.events.addListener(chart, 'select', function(e) {
+         //the built-in tooltip
+//          var tooltip = document.querySelector('.google-visualization-tooltip:not([clone])');
+          //remove previous clone when there is any
+//          if (chart.ttclone) {
+//            chart.ttclone.parentNode.removeChild(chart.ttclone)
+//          }
+          //create a clone of the built-in tooltip
+//          chart.ttclone = tooltip.cloneNode(true);
+          //create a custom attribute to be able to distinguish
+          //built-in tooltip and clone
+//          chart.ttclone.setAttribute('clone', true);
+          //inject clone into document
+//          tooltip.parentNode.insertBefore(chart.ttclone, chart.tooltip);
+//        });
+	//============================================================================
+
+
         chart.draw(dataTable, options);
+
+	todayLine('timeline');
+        google.visualization.events.addListener(chart, 'onmouseover', function(obj){
+        if(obj.row == 0){
+          $('.google-visualization-tooltip').css('display', 'none');
+        }
+        todayLine('timeline');
+        })
+        google.visualization.events.addListener(chart, 'onmouseout', function(obj){
+        todayLine('timeline');
+        })
+
       }
+
+      function tooltipHTML(task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, fte) {
+	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Description: </b>' + description + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte;
+      }
+
+      function todayLine(div){
+         var height;
+         $('#' + div + ' rect').each(function(index){
+         var x = parseFloat($(this).attr('x'));
+         var y = parseFloat($(this).attr('y'));
+         if(x == 0 && y == 0) {height = parseFloat($(this).attr('height'))}
+         })
+         var nowWord = $('#' + div + ' text:contains("Today")');
+         nowWord.prev().first().attr('height', height + 'px').attr('width', '1px').attr('y', '0');
+      }
+
     </script>
 
    
@@ -49,11 +111,18 @@
       <div class='row'>
         <div class="col-lg-12 col-sm-12 col-md-12">
           <h1>Roadmap</h1>
+	  <div class='row'>
+           <div class="col-lg-1 col-sm-1 col-md-1">
+	    <a class="btn btn-warning" role="button" onClick="history.go(0)">Update</a>
+	   </div>
+           <div class="col-lg-1 col-sm-1 col-md-1">
+	    <a class="btn btn-warning" role="button" href="/download">Download CSV</a>
+	   </div>
+           <div class="col-lg-10 col-sm-10 col-md-10">
+	   </div>
+	  </div>
 	  <br>
-	  <a class="btn btn-warning" role="button" onClick="history.go(0)">Update</a>
-	  <br>
-	  <br>
-          <div id="timeline" style="height: 720px;"></div>
+          <div id="timeline" style="height: 1536px;"></div>
 	</div>
       </div>
     </div>
