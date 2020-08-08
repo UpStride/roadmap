@@ -40,10 +40,10 @@
           // This line makes the entire category's tooltip active.
           focusTarget: 'category',
 	  tooltip: {isHtml: true},
-          timeline: { colorByRowLabel: true }
+          timeline: { colorByRowLabel: true,
+	              rowLabelStyle: {color: 'black', fontName: 'Arial', fontSize: 16}}
         };
 
-        // chart.draw(dataTable, options);
 	// Create and draw the visualization.
         new google.visualization.Timeline(document.getElementById('timeline')).draw(dataTable, options);
       }
@@ -52,6 +52,7 @@
 	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Description: </b>' + description + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte;
        
       }
+
     </script>
 
    
