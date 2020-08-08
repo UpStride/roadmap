@@ -22,10 +22,10 @@ def process_dataframe(df):
 
     """
     
-    df = df[['section', 'task', 'description', 'start_date', 'end_date', 'fte']]
+    df = df[['section', 'task', 'description', 'start_date', 'end_date', 'duration_weeks', 'fte', 'challenges_and_opportunities']]
     
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
+    df['start_date'] = pd.to_datetime(df['start_date'], format="%Y-%m-%d")
+    df['end_date'] = pd.to_datetime(df['end_date'], format="%Y-%m-%d")
 
     df['year_start'] = df['start_date'].dt.year
     df['month_start'] = df['start_date'].dt.month
