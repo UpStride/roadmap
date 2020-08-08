@@ -1,12 +1,13 @@
 from flask import Flask
 from flask_restful import Api
-from resources import Home
+from resources import Home, DownloadData
 import pandas as pd
 
 app = Flask(__name__)
 api = Api(app)
 
 api.add_resource(Home, '/')
+api.add_resource(DownloadData, '/download')
 
 if __name__ == '__main__':
    

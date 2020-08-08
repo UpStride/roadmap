@@ -35,7 +35,12 @@ def process_dataframe(df):
     df['month_end'] = df['end_date'].dt.month
     df['day_end'] = df['end_date'].dt.day
 
+    # Save dataframe as CSV
+    df.to_csv('/tmp/data.csv')
+
     return df.to_dict('records')
+
+
 
 
 
