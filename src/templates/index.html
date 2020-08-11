@@ -3,6 +3,7 @@
   <head>
  
    <!-- Bootstrap Core CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
    <link href="{{ relpath }}css/bootstrap.min.css" rel="stylesheet">
    <link href="{{ relpath }}css/font-awesome.min.css" rel="stylesheet">
    <link href="{{ relpath }}css/custom.css" rel="stylesheet">
@@ -32,11 +33,19 @@
         dataTable.addColumn({ type: 'date', id: 'end' });
         dataTable.addRows([
 	[ '\0', 'Today', '', new Date(), new Date()],
+        {% if first_column == 'section' %}
         {% for entry in data %}
-		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["fte"] }}' ),
+		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}' ),
             new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
             new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
+	{% else %}
+        {% for entry in data %}
+		[ '{{ entry["work_package"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}' ),
+            new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
+            new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
+	{% endfor %}
+	{% endif %}
 	]);
 
 	var options = {
@@ -87,8 +96,8 @@
 
       }
 
-      function tooltipHTML(task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, fte) {
-	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Description: </b>' + description + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte;
+      function tooltipHTML(section, task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, workpackage, verrou, fte) {
+	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Section: </b>' + section + '<br><b>Work Package: </b>'  + workpackage + '<br><b>Description: </b>' + description + '<br><b>Verrou Technologique: </b>' + verrou + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte;
       }
 
       function todayLine(div){
@@ -110,20 +119,33 @@
     <div class="container">
       <div class='row'>
         <div class="col-lg-12 col-sm-12 col-md-12">
-          <h1>Roadmap</h1>
-	  <div class='row'>
-           <div class="col-lg-1 col-sm-1 col-md-1">
-	    <a class="btn btn-warning" role="button" onClick="history.go(0)">Update</a>
-	   </div>
-           <div class="col-lg-1 col-sm-1 col-md-1">
-	    <a class="btn btn-warning" role="button" href="/download">Download CSV</a>
-	   </div>
-           <div class="col-lg-10 col-sm-10 col-md-10">
-	   </div>
-	  </div>
-	  <br>
+          <h1>Roadmap (by {{ first_column }}) </h1>
+	          <div class='row'>
+              <div class="col-lg-2 col-sm-2 col-md-2">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Visualize
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="/">Section</a>
+                    <br>
+                    <a class="dropdown-item" href="/workpackage">Work Package</a>
+                  </div>
+                </div>        
+              </div>
+              
+              <!-- <div class="col-lg-1 col-sm-1 col-md-1">
+	              <a class="btn btn-warning" role="button" onClick="history.go(0)">Update</a>
+	            </div>-->
+
+	            <div class="col-lg-8 col-sm-8 col-md-8"></div>
+              <div class="col-lg-2 col-sm-2 col-md-2">
+	              <a class="btn btn-warning" role="button" href="/download">Download CSV</a>
+	            </div>
+            </div>
+	          <br>
           <div id="timeline" style="height: 1536px;"></div>
-	</div>
+	      </div>
       </div>
     </div>
   </body>

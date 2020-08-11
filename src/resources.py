@@ -17,7 +17,8 @@ def verify(username, password):
 
 class Home(Resource):
     def __init__(self, **kwargs):
-        self._variables = {'relpath': '/static/'}
+        self._variables = {'relpath': '/static/',
+                           'first_column': 'section'}
         self._variables.update(kwargs)
 
     @auth.login_required
@@ -29,9 +30,30 @@ class Home(Resource):
         # Generate payload
         payload = process_dataframe(df)
 
-        self._variables.update({'data': payload})
+        self._variables.update({'data': payload, 
+                                'first_column': self._variables['first_column']})
+        return make_response(render_template('index.html', **self._variables), 200, headers)
+
+class WorkPackage(Resource):
+    def __init__(self, **kwargs):
+        self._variables = {'relpath': '/static/',
+                           'first_column': 'work_package'}
+        self._variables.update(kwargs)
+
+    @auth.login_required
+    def get(self):
+        headers = {'Content-Type': 'text/html'}
+        
+        # Get spreadsheet from Google Drive
+        df = get_spreadsheet(constants.SPREADSHEETNAME)
+        # Generate payload
+        payload = process_dataframe(df)
+
+        self._variables.update({'data': payload, 
+                                'first_column': self._variables['first_column']})
 
         return make_response(render_template('index.html', **self._variables), 200, headers)
+
 
 
 class DownloadData(Resource):

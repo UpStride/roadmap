@@ -22,7 +22,7 @@ def process_dataframe(df):
 
     """
     
-    df = df[['section', 'task', 'description', 'start_date', 'end_date', 'duration_weeks', 'fte', 'challenges_and_opportunities']]
+    df = df[['section', 'task', 'description', 'start_date', 'end_date', 'duration_weeks', 'fte', 'challenges_and_opportunities', 'work_package', 'verrou_technologique']]
     
     df['start_date'] = pd.to_datetime(df['start_date'], format="%Y-%m-%d")
     df['end_date'] = pd.to_datetime(df['end_date'], format="%Y-%m-%d")
