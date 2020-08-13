@@ -36,13 +36,13 @@
 	[ '\0', 'Today', '', new Date(), new Date()],
         {% if first_column == 'section' %}
         {% for entry in data %}
-		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}' ),
+		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}', '{{ entry["team_members"] }}'),
             new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
             new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
 	{% else %}
         {% for entry in data %}
-		[ '{{ entry["work_package"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}' ),
+		[ '{{ entry["work_package"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}', '{{ entry["team_members"] }}'),
             new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
             new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
 	{% endfor %}
@@ -97,8 +97,8 @@
 
       }
 
-      function tooltipHTML(section, task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, workpackage, verrou, fte) {
-	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Section: </b>' + section + '<br><b>Work Package: </b>'  + workpackage + '<br><b>Description: </b>' + description + '<br><b>Verrou Technologique: </b>' + verrou + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte;
+      function tooltipHTML(section, task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, workpackage, verrou, fte, teammembers) {
+	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Section: </b>' + section + '<br><b>Work Package: </b>'  + workpackage + '<br><b>Description: </b>' + description + '<br><b>Verrou Technologique: </b>' + verrou + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte + '<br><b>Team Members: </b>' + teammembers;
       }
 
       function todayLine(div){
@@ -128,9 +128,9 @@
                     Visualize
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="/">Section</a>
+                    <a class="dropdown-item" href="/">Standard</a>
                     <br>
-                    <a class="dropdown-item" href="/workpackage">Work Package</a>
+                    <a class="dropdown-item" href="/workpackage">Work Package (research focused)</a>
                   </div>
                 </div>        
               </div>
