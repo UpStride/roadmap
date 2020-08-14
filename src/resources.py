@@ -28,7 +28,7 @@ class Home(Resource):
         # Get spreadsheet from Google Drive
         df = get_spreadsheet(constants.SPREADSHEETNAME)
         # Generate payload
-        payload = process_dataframe(df)
+        payload = process_dataframe(df, private=True)
 
         self._variables.update({'data': payload, 
                                 'first_column': self._variables['first_column']})
@@ -47,7 +47,7 @@ class WorkPackage(Resource):
         # Get spreadsheet from Google Drive
         df = get_spreadsheet(constants.SPREADSHEETNAME)
         # Generate payload
-        payload = process_dataframe(df)
+        payload = process_dataframe(df, private=True)
 
         self._variables.update({'data': payload, 
                                 'first_column': self._variables['first_column']})

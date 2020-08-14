@@ -11,7 +11,7 @@ def get_spreadsheet(filename):
     return df
 
 
-def process_dataframe(df):
+def process_dataframe(df, private=False):
     """ 
     Process dataframe 
 
@@ -24,6 +24,9 @@ def process_dataframe(df):
     """
     
     df = df[COLUMNS]
+    
+    if private:
+        df = df.loc[df['private'] == 0]
     
     df['start_date'] = pd.to_datetime(df['start_date'], format="%Y-%m-%d")
     df['end_date'] = pd.to_datetime(df['end_date'], format="%Y-%m-%d")
