@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from resources import Home, DownloadData, WorkPackage
+from utils import constants as constants
 import pandas as pd
 
 app = Flask(__name__)
@@ -14,5 +15,5 @@ if __name__ == '__main__':
    
     app.run(debug=True,
             host='0.0.0.0',
-            port='8081')
+            port=constants.PORT)
     
