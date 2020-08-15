@@ -15,10 +15,13 @@ First, open the file constants.py to modify the variables USER_DATA (to control 
 It can be deployed by either of the following ways:
 
 - Run Python flask app
+```bash
 $ cd src/ && python run.py
-
+```
 - Build the docker container and start the service
+```bash
 $ cd src/ && . docker.sh
+```
 
 Both ways listen for requests on localhost:8082 by default. 
 
