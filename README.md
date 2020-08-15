@@ -10,6 +10,8 @@ It reads the content of a specific Google Spreadsheet using [gspread](https://gs
 
 ## Deploy 
 
+First, open the file constants.py to modify the variables USER_DATA (to control user access) and APIKEYPATH (path to the json file for authentication mentioned above).
+
 It can be deployed by either of the following ways:
 
 - Run Python flask app

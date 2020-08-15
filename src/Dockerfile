@@ -13,7 +13,7 @@ RUN apt-get update && \
 
 COPY . /usr/src/app
 
-EXPOSE 80
+EXPOSE 8082
 
 ENTRYPOINT ["python3", "run.py"]
 
