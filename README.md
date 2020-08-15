@@ -10,13 +10,16 @@ It reads the content of a specific Google Spreadsheet using [gspread](https://gs
 
 ## Deploy 
 
-It can be deployed by either of the following ways:
+It can be deployed via either of the following ways:
 
 - Run Python flask app
+```bash
 $ cd src/ && python run.py
-
+```
 - Build the docker container and start the service
+```bash
 $ cd src/ && . docker.sh
+```
 
 Both ways listen for requests on localhost:8082 by default. 
 
