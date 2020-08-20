@@ -19,13 +19,18 @@ class Spreadsheet():
         pass
 
     # Find a spreadsheet name and open the first sheet
-    def load(self, filename):
+    def load(self, filename, tab='Sheet1'):
         #logger.info('loading {}'.format(filename))
         
         print('>>> Loading spreadsheet {}'.format(filename))
 
         # Open spreadsheet
-        sheet = gc.open(filename).sheet1
+        if tab == 'Sheet1':
+            sheet = gc.open(filename).sheet1
+        elif tab == 'Sheet2':
+            sheet = gc.open(filename).get_worksheet(1)
+        else:
+            print(">>> Requested tab doesn't exist. Reverting to spreadsheet's Sheet1")
 
         # Extract and stores values in a Pandas dataframe
         list_of_hashes = sheet.get_all_records()
