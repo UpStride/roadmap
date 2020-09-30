@@ -19,13 +19,16 @@ class Spreadsheet():
         pass
 
     # Find a spreadsheet name and open the first sheet
-    def load(self, filename):
+    def load(self, filename, tab=0):
         #logger.info('loading {}'.format(filename))
         
         print('>>> Loading spreadsheet {}'.format(filename))
 
         # Open spreadsheet
-        sheet = gc.open(filename).sheet1
+        try:
+            sheet = gc.open(filename).get_worksheet(tab)
+        except:
+            print(">>> Requested tab doesn't exist. Reverting to spreadsheet's Sheet1")
 
         # Extract and stores values in a Pandas dataframe
         list_of_hashes = sheet.get_all_records()
@@ -33,5 +36,5 @@ class Spreadsheet():
         df = pd.DataFrame(list_of_hashes)
 
         # TODO: Save df in case connection with Google Sheets is not available         
-        # df.to_csv('/tmp/df_Claire_project.csv')
+        # df.to_csv('/tmp/df.csv')
         return df

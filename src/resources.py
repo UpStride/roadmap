@@ -26,7 +26,7 @@ class Home(Resource):
         headers = {'Content-Type': 'text/html'}
         
         # Get spreadsheet from Google Drive
-        df = get_spreadsheet(constants.SPREADSHEETNAME)
+        df = get_spreadsheet(constants.SPREADSHEETNAME, tab=0)
         # Generate payload
         payload = process_dataframe(df, private=True)
 
@@ -45,7 +45,7 @@ class WorkPackage(Resource):
         headers = {'Content-Type': 'text/html'}
         
         # Get spreadsheet from Google Drive
-        df = get_spreadsheet(constants.SPREADSHEETNAME)
+        df = get_spreadsheet(constants.SPREADSHEETNAME, tab=0)
         # Generate payload
         payload = process_dataframe(df, private=True)
 

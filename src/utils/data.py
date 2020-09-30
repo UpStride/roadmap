@@ -2,11 +2,11 @@ import pandas as pd
 from .spreadsheet import Spreadsheet
 from .constants import COLUMNS
 
-def get_spreadsheet(filename):
+def get_spreadsheet(filename, tab=0):
 
     ss = Spreadsheet()
 
-    df = ss.load(filename)
+    df = ss.load(filename, tab=tab)
 
     return df
 
