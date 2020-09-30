@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <html>
+  
   <head>
    <meta charset="utf-8"/>
    <!-- Bootstrap Core CSS -->
@@ -15,107 +16,11 @@
    <script type="text/javascript" src="{{ relpath }}js/popper.js"></script>
    <!-- Bootstrap core JavaScript -->
    <script type="text/javascript" src="{{ relpath }}js/bootstrap.min.js"></script>
-
    <!-- Timeline chart -->
    <script type="text/javascript" src="{{ relpath }}js/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['timeline']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var container = document.getElementById('timeline');
-        // var chart = new google.visualization.Timeline(container);
-        var dataTable = new google.visualization.DataTable();
-
-        dataTable.addColumn({ type: 'string', id: 'section' });
-        dataTable.addColumn({ type: 'string', id: 'task' });
-	// Tooltip has to be the third column, otherwise it doesn't work.      
-	dataTable.addColumn({ type: 'string', role: 'tooltip', 'p': {'html': true}});
-        dataTable.addColumn({ type: 'date', id: 'start' });
-        dataTable.addColumn({ type: 'date', id: 'end' });
-        dataTable.addRows([
-	[ '\0', 'Today', '', new Date(), new Date()],
-        {% if first_column == 'section' %}
-        {% for entry in data %}
-		[ '{{ entry["section"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}', '{{ entry["team_members"] }}'),
-            new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
-            new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
-	{% endfor %}
-	{% else %}
-        {% for entry in data %}
-		[ '{{ entry["work_package"] }}', '{{ entry["task"] }}', tooltipHTML('{{ entry["section"] }}', '{{ entry["task"] }}', '{{ entry["year_start"] }}', '{{ entry["month_start"] }}', '{{ entry["day_start"] }}', '{{ entry["year_end"] }}', '{{ entry["month_end"] }}', '{{ entry["day_end"] }}', '{{ entry["duration_weeks"] }}', '{{ entry["description"] }}', '{{ entry["challenges_and_opportunities"] }}', '{{ entry["work_package"] }}', '{{ entry["verrou_technologique"] }}', '{{ entry["fte"] }}', '{{ entry["team_members"] }}'),
-            new Date({{ entry['year_start']}}, {{ entry['month_start'] - 1 }}, {{ entry['day_start']}}), 
-            new Date({{ entry['year_end']}}, {{ entry['month_end'] - 1 }}, {{ entry['day_end']}}) ],
-	{% endfor %}
-	{% endif %}
-	]);
-
-	var options = {
-          // This line makes the entire category's tooltip active.
-          focusTarget: 'category',
-	  tooltip: {isHtml: true},
-          timeline: { colorByRowLabel: true,
-	              rowLabelStyle: {color: 'black', fontName: 'Arial', fontSize: 14}}
-        };
-
-	// Create and draw the visualization.
-        var chart = new google.visualization.Timeline(document.getElementById('timeline'));
-	
-	// Enable tooltip on selection ==============================================
-	// From https://stackoverflow.com/questions/32247941/trigger-google-timeline-tooltip-with-selection      
-	//      
-        //select-handler
-//        google.visualization.events.addListener(chart, 'select', function(e) {
-         //the built-in tooltip
-//          var tooltip = document.querySelector('.google-visualization-tooltip:not([clone])');
-          //remove previous clone when there is any
-//          if (chart.ttclone) {
-//            chart.ttclone.parentNode.removeChild(chart.ttclone)
-//          }
-          //create a clone of the built-in tooltip
-//          chart.ttclone = tooltip.cloneNode(true);
-          //create a custom attribute to be able to distinguish
-          //built-in tooltip and clone
-//          chart.ttclone.setAttribute('clone', true);
-          //inject clone into document
-//          tooltip.parentNode.insertBefore(chart.ttclone, chart.tooltip);
-//        });
-	//============================================================================
-
-
-        chart.draw(dataTable, options);
-
-	todayLine('timeline');
-        google.visualization.events.addListener(chart, 'onmouseover', function(obj){
-        if(obj.row == 0){
-          $('.google-visualization-tooltip').css('display', 'none');
-        }
-        todayLine('timeline');
-        })
-        google.visualization.events.addListener(chart, 'onmouseout', function(obj){
-        todayLine('timeline');
-        })
-
-      }
-
-      function tooltipHTML(section, task, yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd, durationWeeks, description, chopp, workpackage, verrou, fte, teammembers) {
-	      return '<h4>' + task + '</h4>' + '<br><p>' + yearStart + '-' + monthStart + '-' + dayStart + ' to ' + yearEnd + '-' + monthEnd + '-' + dayEnd + ' (' + durationWeeks + ' weeks)</p>' + '<br><b>Section: </b>' + section + '<br><b>Work Package: </b>'  + workpackage + '<br><b>Description: </b>' + description + '<br><b>Verrou Technologique: </b>' + verrou + '<br><b>Challenges & Opportunities: </b>' + chopp + '<br><b>FTE: </b>' + fte + '<br><b>Team Members: </b>' + teammembers;
-      }
-
-      function todayLine(div){
-         var height;
-         $('#' + div + ' rect').each(function(index){
-         var x = parseFloat($(this).attr('x'));
-         var y = parseFloat($(this).attr('y'));
-         if(x == 0 && y == 0) {height = parseFloat($(this).attr('height'))}
-         })
-         var nowWord = $('#' + div + ' text:contains("Today")');
-         nowWord.prev().first().attr('height', height + 'px').attr('width', '1px').attr('y', '0');
-      }
-
-    </script>
-
-   
+   {% include 'roadmap.html' %}   
   </head>
+
   <body>
     <div class="container">
       <div class='row'>
