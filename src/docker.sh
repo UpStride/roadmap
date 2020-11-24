@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Parameters
-IMAGE="upstride/roadmap:1.0"
+TAG="1.2"
+IMAGE="upstride/roadmap:$TAG"
 PORT="80"
 SERVICE="roadmap"
 
