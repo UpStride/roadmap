@@ -2,7 +2,7 @@
 
 # Parameters
 IMAGE="upstride/roadmap:1.0"
-PORT="8082"
+PORT="80"
 SERVICE="roadmap"
 
 # Build container

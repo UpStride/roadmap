@@ -3,7 +3,7 @@ USER_DATA = {
     "user": "secret"
 }
 # Define port
-PORT="8082"
+PORT="80"
 # Spreadsheet file name -- exact name as in Google Docs
 SPREADSHEETNAME = "Roadmap_for_rest_api"
 # Path to Google Docs API key -- instructions to generate it cab be found here: https://developers.google.com/sheets/api/guides/authorizing
