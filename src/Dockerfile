@@ -2,6 +2,8 @@ FROM ubuntu:18.04
 
 LABEL maintainer="wilder.lopes@upstride.io"
 
+ENV PORT=80 
+
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
